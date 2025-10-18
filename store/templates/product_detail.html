@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.name }} - ShopKart</title>
+    <style>
+        body { font-family: Arial; margin: 0; padding: 20px; }
+        .header { background: #2c3e50; color: white; padding: 15px; text-align: center; }
+        .product-detail { max-width: 800px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .product-image { max-width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }
+        .product-info { margin-top: 20px; }
+        .price { color: #e74c3c; font-weight: bold; font-size: 1.5em; }
+        .stock { color: #27ae60; font-weight: bold; }
+        .out-of-stock { color: #e74c3c; font-weight: bold; }
+        .btn { background: #2980b9; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 5px; }
+        .back-btn { background: #95a5a6; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛍️ ShopKart</h1>
+        <p>Product Details</p>
+    </div>
+
+    <div class="product-detail">
+        <a href="{% url 'home' %}" class="btn back-btn">← Back to Home</a>
+        
+        <h2>{{ product.name }}</h2>
+        
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+        {% else %}
+            <div style="background: #f0f0f0; height: 300px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                <p>No Image Available</p>
+            </div>
+        {% endif %}
+        
+        <div class="product-info">
+            <p><strong>Description:</strong> {{ product.description }}</p>
+            <p class="price">Price: ₹{{ product.price }}</p>
+            <p>
+                <strong>Stock:</strong> 
+                <span class="{% if product.stock > 0 %}stock{% else %}out-of-stock{% endif %}">
+                    {% if product.stock > 0 %}
+                        {{ product.stock }} items available
+                    {% else %}
+                        Out of Stock
+                    {% endif %}
+                </span>
+            </p>
+            <p><strong>Category:</strong> {{ product.category.name }}</p>
+            <p><strong>Added on:</strong> {{ product.created_at|date:"F d, Y" }}</p>
+            
+            {% if product.stock > 0 %}
+                <button class="btn" style="background: #27ae60;">Add to Cart</button>
+            {% else %}
+                <button class="btn" style="background: #95a5a6;" disabled>Out of Stock</button>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
