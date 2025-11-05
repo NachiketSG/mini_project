@@ -27,6 +27,7 @@
     <div class="user-auth">
         {% if user.is_authenticated %}
             Welcome, <strong>{{ user.username }}</strong> !
+            <a href="{% url 'cart_view' %}">🛒 Cart</a>
             <a href="{% url 'profile' %}">👤 My Profile</a>
             
             <!--LOGOUT BUTTON -->
@@ -64,6 +65,17 @@
                 {% endif %}
                 <p>{{ product.description|truncatewords:10 }}</p>
                 <p class="price">₹{{ product.price }}</p>
+                
+                <!-- ADD TO CART BUTTON -->
+                {% if user.is_authenticated %}
+                    <form action="{% url 'add_to_cart' product.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background: #27ae60; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px;">
+                            🛒 Add to Cart
+                        </button>
+                    </form>
+                {% endif %}
+                
                 <a href="{% url 'product_detail' product.id %}" style="background: #2980b9; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px;">View Details</a>
             </div>
         {% empty %}

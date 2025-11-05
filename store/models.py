@@ -51,16 +51,32 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
 
-# Shopping Cart Model
+# Shopping Cart Model (UPDATED)
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    session_key = models.CharField(max_length=40, null=True, blank=True)  # Guest users ke liye
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        if self.user:
+            return f"Cart - {self.user.username}"
+        return f"Cart - {self.session_key}"
+
+# Cart Item Model (NEW)
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     added_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.user.username}'s cart - {self.product.name}"
+        return f"{self.quantity} x {self.product.name}"
+    
+    def get_total_price(self):
+        return self.quantity * self.product.price
 
+# User Profile Model
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
