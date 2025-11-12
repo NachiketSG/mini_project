@@ -41,6 +41,44 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id} - {self.user.username}"
 
+# Address Model (NEW)
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=100)
+    street_address = models.TextField()
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    postal_code = models.CharField(max_length=10)
+    phone = models.CharField(max_length=15)
+    is_default = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f"{self.full_name} - {self.city}"
+
+# Order Model ko UPDATE karo - ye fields ADD karo:
+class Order(models.Model):
+    ORDER_STATUS = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'), 
+        ('shipped', 'Shipped'),
+        ('delivered', 'Delivered'),
+        ('cancelled', 'Cancelled'),
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=ORDER_STATUS, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    # NEW FIELDS FOR CHECKOUT
+    shipping_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True, related_name='shipping_orders')
+    payment_method = models.CharField(max_length=50, default='card')
+    payment_status = models.CharField(max_length=20, default='pending')
+    
+    def __str__(self):
+        return f"Order {self.id} - {self.user.username}"
+
 # OrderItem Model
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Confirmation - ShopKart</title>
+    <style>
+        body { font-family: Arial; margin: 0; padding: 20px; background: #f5f5f5; }
+        .confirmation-container { max-width: 600px; margin: 50px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        .header { margin-bottom: 30px; }
+        .success-icon { font-size: 60px; color: #27ae60; margin-bottom: 20px; }
+        .order-details { background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: left; }
+        .detail-item { margin-bottom: 10px; }
+        .btn { background: #3498db; color: white; padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; margin: 10px; }
+        .btn-success { background: #27ae60; }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <div class="success-icon">✅</div>
+        
+        <div class="header">
+            <h1>🛒 ShopKart</h1>
+            <h2>Order Confirmed!</h2>
+            <p>Thank you for your purchase</p>
+        </div>
+
+        <div class="order-details">
+            <div class="detail-item"><strong>Order ID:</strong> #{{ order.id }}</div>
+            <div class="detail-item"><strong>Order Date:</strong> {{ order.created_at|date:"F d, Y H:i" }}</div>
+            <div class="detail-item"><strong>Total Amount:</strong> ₹{{ order.total_price }}</div>
+            <div class="detail-item"><strong>Payment Method:</strong> {{ order.get_payment_method_display }}</div>
+            <div class="detail-item"><strong>Status:</strong> <span style="color: #27ae60;">{{ order.get_status_display }}</span></div>
+        </div>
+
+        <h3>Order Items:</h3>
+        <div style="text-align: left; margin: 20px 0;">
+            {% for item in order_items %}
+            <div style="padding: 10px 0; border-bottom: 1px solid #eee;">
+                {{ item.quantity }} x {{ item.product.name }} - ₹{{ item.get_total_price }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="margin-top: 30px;">
+            <a href="{% url 'order_detail' order.id %}" class="btn btn-success">📦 View Order Details</a>
+            <a href="{% url 'home' %}" class="btn">🏠 Continue Shopping</a>
+        </div>
+    </div>
+</body>
+</html>

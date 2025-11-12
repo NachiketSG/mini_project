@@ -64,7 +64,7 @@
                 <div class="total-price">Total: ₹{{ total_price }}</div>
                 <div style="margin-top: 15px;">
                     <a href="{% url 'home' %}" class="btn">← Continue Shopping</a>
-                    <button class="btn btn-success">🛒 Proceed to Checkout</button>
+                    <a href="{% url 'checkout' %}" class="btn btn-success">🛒 Proceed to Checkout</a>
                 </div>
             </div>
         {% else %}

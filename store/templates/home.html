@@ -25,22 +25,22 @@
 
     <!-- USER AUTHENTICATION LINKS -->
     <div class="user-auth">
-        {% if user.is_authenticated %}
-            Welcome, <strong>{{ user.username }}</strong> !
-            <a href="{% url 'cart_view' %}">🛒 Cart</a>
-            <a href="{% url 'profile' %}">👤 My Profile</a>
-            
-            <!--LOGOUT BUTTON -->
-            <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="logout-btn">🚪 Logout</button>
-            </form>
-            
-        {% else %}
-            <a href="{% url 'login' %}">🔑 Login</a>
-            <a href="{% url 'signup' %}">📝 Sign Up</a>
-        {% endif %}
-    </div>
+    {% if user.is_authenticated %}
+        Welcome, <strong>{{ user.username }}</strong> !
+        <a href="{% url 'cart_view' %}">🛒 Cart</a>
+        <a href="{% url 'order_history' %}">📦 Orders</a>
+        <a href="{% url 'profile' %}">👤 My Profile</a>
+        
+        <!-- LOGOUT BUTTON -->
+        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">🚪 Logout</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}">🔑 Login</a>
+        <a href="{% url 'signup' %}">📝 Sign Up</a>
+    {% endif %}
+</div>
 
     <div class="search">
         <form action="{% url 'search_products' %}" method="get">
