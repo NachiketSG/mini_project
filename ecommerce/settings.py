@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',      
+    'cloudinary',          
     'store',
 ]
 
@@ -102,3 +104,15 @@ LOGOUT_REDIRECT_URL = '/'
 
 # DEFAULT PRIMARY KEY
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+    cloud_name = 'kajhtzez',
+    api_key = '223448428972989',
+    api_secret = '_ubMgd8TvvJcTn26N6AW4YPal78'
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
