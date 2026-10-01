@@ -5,7 +5,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
-SECRET_KEY = 'django-insecure-efshowhgk)sz6j77#u0idcr#g1tifvv(+680_k^#eo2ehp_d93'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-efshowhgk)sz6j77#u0idcr#g1tifvv(+680_k^#eo2ehp_d93')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
@@ -23,8 +23,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',      
-    'cloudinary',          
+    'cloudinary_storage',
+    'cloudinary',
     'store',
 ]
 
@@ -89,7 +89,6 @@ USE_TZ = True
 # STATIC FILES
 STATIC_URL = '/static/'
 
-# WhiteNoise sirf production (Render) ke liye
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -105,14 +104,21 @@ LOGOUT_REDIRECT_URL = '/'
 # DEFAULT PRIMARY KEY
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# CLOUDINARY CONFIGURATION (Environment Variables se)
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'kajhtzez'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '223448428972989'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', '_ubMgd8TvvJcTn26N6AW4YPal78'),
+}
+
 cloudinary.config(
-    cloud_name = 'kajhtzez',
-    api_key = '223448428972989',
-    api_secret = '_ubMgd8TvvJcTn26N6AW4YPal78'
+    cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
+    api_key=CLOUDINARY_STORAGE['API_KEY'],
+    api_secret=CLOUDINARY_STORAGE['API_SECRET'],
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
