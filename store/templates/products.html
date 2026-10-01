@@ -11,7 +11,8 @@
         .current-category { background: #e74c3c; }
         .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         .product { border: 1px solid #ddd; padding: 15px; border-radius: 8px; text-align: center; }
-        .product img { max-width: 100%; height: 150px; object-fit: cover; }
+        .product img { max-width: 100%; height: 150px; object-fit: cover; border-radius: 6px; }
+        .no-image { width: 100%; height: 150px; background: #e0e0e0; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: #888; }
         .price { color: #e74c3c; font-weight: bold; font-size: 1.2em; }
         .back-btn { background: #95a5a6; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; }
     </style>
@@ -54,6 +55,8 @@
                 <h3>{{ product.name }}</h3>
                 {% if product.image %}
                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <div class="no-image">📦 No Image</div>
                 {% endif %}
                 <p>{{ product.description|truncatewords:10 }}</p>
                 <p class="price">₹{{ product.price }}</p>

@@ -13,7 +13,8 @@
         .category { background: #3498db; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; }
         .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         .product { border: 1px solid #ddd; padding: 15px; border-radius: 8px; text-align: center; }
-        .product img { max-width: 100%; height: 150px; object-fit: cover; }
+        .product img { max-width: 100%; height: 150px; object-fit: cover; border-radius: 6px; }
+        .no-image { width: 100%; height: 150px; background: #e0e0e0; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: #888; }
         .price { color: #e74c3c; font-weight: bold; font-size: 1.2em; }
     </style>
 </head>
@@ -25,22 +26,20 @@
 
     <!-- USER AUTHENTICATION LINKS -->
     <div class="user-auth">
-    {% if user.is_authenticated %}
-        Welcome, <strong>{{ user.username }}</strong> !
-        <a href="{% url 'cart_view' %}">🛒 Cart</a>
-        <a href="{% url 'order_history' %}">📦 Orders</a>
-        <a href="{% url 'profile' %}">👤 My Profile</a>
-        
-        <!-- LOGOUT BUTTON -->
-        <form action="{% url 'logout' %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="logout-btn">🚪 Logout</button>
-        </form>
-    {% else %}
-        <a href="{% url 'login' %}">🔑 Login</a>
-        <a href="{% url 'signup' %}">📝 Sign Up</a>
-    {% endif %}
-</div>
+        {% if user.is_authenticated %}
+            Welcome, <strong>{{ user.username }}</strong> !
+            <a href="{% url 'cart_view' %}">🛒 Cart</a>
+            <a href="{% url 'order_history' %}">📦 Orders</a>
+            <a href="{% url 'profile' %}">👤 My Profile</a>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">🚪 Logout</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">🔑 Login</a>
+            <a href="{% url 'signup' %}">📝 Sign Up</a>
+        {% endif %}
+    </div>
 
     <div class="search">
         <form action="{% url 'search_products' %}" method="get">
@@ -62,11 +61,11 @@
                 <h3>{{ product.name }}</h3>
                 {% if product.image %}
                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <div class="no-image">📦 No Image</div>
                 {% endif %}
                 <p>{{ product.description|truncatewords:10 }}</p>
                 <p class="price">₹{{ product.price }}</p>
-                
-                <!-- ADD TO CART BUTTON -->
                 {% if user.is_authenticated %}
                     <form action="{% url 'add_to_cart' product.id %}" method="post" style="display: inline;">
                         {% csrf_token %}
@@ -75,7 +74,6 @@
                         </button>
                     </form>
                 {% endif %}
-                
                 <a href="{% url 'product_detail' product.id %}" style="background: #2980b9; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px;">View Details</a>
             </div>
         {% empty %}
